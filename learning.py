@@ -11,8 +11,14 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn import preprocessing
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
+import matplotlib.pyplot as plt
 
+import warnings
 
+# Suppress the warning
+warnings.filterwarnings("ignore", category=UserWarning)
+def get_first_element(str):
+     return str.split(',')[0]
 
 
 le_country = LabelEncoder() 
@@ -46,6 +52,10 @@ ratings_ages = {
 df['ages'] = df['rating'].replace(ratings_ages)
 df['ages'].unique()
 
+df = df.filter(items=['country', 'ages'])
+df = df.dropna()
+
+
 
 df['ages']= le_ages.fit_transform(df['ages'])
 le_ages_mapping = dict(zip(le_ages.classes_, le_ages.transform(le_ages.classes_)))
@@ -53,11 +63,8 @@ print(le_ages_mapping)
 df['country'] = le_country.fit_transform(df['country'])
 le_country_mapping = dict(zip(le_country.classes_, le_country.transform(le_country.classes_)))
 
-   
-X = df[['country']]
-y = df['ages']
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25, random_state=42)
+
 
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier  
@@ -109,7 +116,36 @@ for encoded_country in unique_countries:
 for country, age_category in country_age_predictions.items():
     print(f"Predicted age category for {country}: {age_category}")
 
+predicted_age_dictionary = {country: age_category for country, age_category in country_age_predictions.items()}
 
+
+
+
+countries = list(predicted_age_dictionary.keys())
+age_categories = list(predicted_age_dictionary.values())
+
+       
+country = [item.split(',')[0] for item in countries]
+    
+
+    
+print(country)
+print(age_categories)
+
+fig, ax = plt.subplots(figsize=(100,6))
+
+
+bar_chart = ax.bar(country, age_categories)
+
+
+plt.xlabel('Countries')
+plt.ylabel('Age Category')
+plt.title('Predicted Age Categories by Country')
+plt.xticks(rotation=90)  
+
+
+plt.tight_layout()
+plt.show()
 
 
 
