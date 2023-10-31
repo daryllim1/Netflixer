@@ -67,13 +67,12 @@ y = df['ages']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Create a classification model (e.g., RandomForest)
 model = RandomForestClassifier(n_estimators=100, random_state=42)
 
-# Fit the model on the training data
+
 model.fit(X_train, y_train)
 
-# Evaluate the model on the test data (classification metrics)
+
 from sklearn.metrics import accuracy_score, classification_report
 
 y_pred = model.predict(X_test)
@@ -88,25 +87,25 @@ print("Classification Report:\n", report)
 
 unique_countries = df['country'].unique()
 
-# Predict age categories for each unique country
+
 country_age_predictions = {}
 
 for encoded_country in unique_countries:
-    # Reshape the input to a 2D array
+    
     encoded_country_2D = encoded_country.reshape(1, -1)
 
-    # Make predictions using the model
+   
     predicted_age_code = model.predict(encoded_country_2D)
 
-    # Inverse transform to get the original age category label
+    
     predicted_age_label = le_ages.inverse_transform(predicted_age_code)
 
-    # Map the numerical country code back to its original label
+   
     original_country_label = le_country.inverse_transform([encoded_country])[0]
 
     country_age_predictions[original_country_label] = predicted_age_label[0]
 
-# Print the predictions for all countries
+
 for country, age_category in country_age_predictions.items():
     print(f"Predicted age category for {country}: {age_category}")
 
