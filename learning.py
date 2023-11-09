@@ -133,7 +133,7 @@ country = [item.split(',')[0] for item in countries]
     
 print(country)
 print(age_categories)
-'''
+
 fig, ax = plt.subplots(figsize=(100,6))
 
 
@@ -148,7 +148,7 @@ plt.xticks(rotation=90)
 
 plt.tight_layout()
 plt.show()
-'''
+
 
 
 data= data['listed_in'].astype(str).apply(lambda s : s.replace('&',' ').replace(',', ' ').split()) 
